@@ -1,6 +1,6 @@
 # TEAM_STATUS — VISIBILITÉ DE L'AVANCEMENT
 
-> Mis à jour à chaque évolution majeure. Dernière mise à jour : **T-021 — Voix de l'onboarding (FEATURE-002) livrée et auditée navigateur**
+> Mis à jour à chaque évolution majeure. Dernière mise à jour : **T-022 — Section « Nos inspirations » (GTA V / The Sims) sur le menu**
 
 ## 🟢 ÉTAT GLOBAL : FEAT-001 LIVRÉE (boucle de jeu complète validée E2E) — commits en cours (T-019) puis AUDIT-002 clôturé
 
@@ -28,7 +28,8 @@
 | **FEAT-001 Abidjan Hustle (T-010→T-018)** | ██████████ 100 % | Boucle de jeu complète E2E — missions M1→M3, tontine, dash, nouchi, cloud save |
 | DevOps FEAT-001 (T-019) | ████████░░ 80 % | Commits en cours |
 | Audit (T-020) | ████████░░ 80 % | AUDIT-002 rédigé |
-| **Voix onboarding (T-021, FEATURE-002)** | ██████████ 100 % | API TTS cache mémoire + hook `useVoice` + `VoiceButton` ×4 écrans ; audit navigateur OK (lecture, toggle, annulation, mobile) — spec `.ai/SPECS/FEATURE-002_VOICE.md` |
+| **Voix onboarding (T-021, FEATURE-002)** | ██████████ 100 % | Pivot T-021b : Web Speech API `fr-FR` native navigateur (latence nulle, 0 serveur) — spec `.ai/SPECS/FEATURE-002_VOICE.md` |
+| Présentation inspirations (T-022) | ██████████ 100 % | Section « Nos inspirations » sur le menu : **GTA V** (monde ouvert, missions variées, humour noir) + **The Sims** (gestion du quotidien, relations sociales) — formulations utilisateur conservées verbatim |
 
 ## Preuves QA FEAT-001 (règle anti-menterie)
 

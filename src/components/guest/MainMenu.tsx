@@ -10,7 +10,7 @@
  * FEATURE-001_UX §4 (wireframe MENU) & §11 (palette).
  */
 
-import { PiggyBank, Play, Rocket, ShieldAlert, Wrench } from "lucide-react";
+import { Car, House, PiggyBank, Play, Rocket, ShieldAlert, Wrench } from "lucide-react";
 import { GLOSSARY, INTRO_TEXT } from "@/lib/game/data";
 import { useGame } from "@/lib/game/store";
 import { APP_NAME, APP_TAGLINE } from "@/lib/app-config";
@@ -19,6 +19,26 @@ import { NouchiText } from "@/components/guest/NouchiText";
 import { VoiceButton } from "@/components/guest/VoiceButton";
 import { GlossarySheet } from "@/components/guest/GlossarySheet";
 import { HowToPlay } from "@/components/guest/HowToPlay";
+
+/**
+ * Inspirations assumées du jeu (retour utilisateur, T-022) :
+ * formulations conservées telles quelles — GTA V → monde ouvert, missions
+ * variées, humour noir ; The Sims → gestion du quotidien, relations sociales.
+ */
+const INSPIRATIONS = [
+  {
+    icon: Car,
+    color: "text-game-terre",
+    title: "GTA V",
+    text: "Monde ouvert, missions variées, humour noir",
+  },
+  {
+    icon: House,
+    color: "text-game-vert",
+    title: "The Sims",
+    text: "Gestion du quotidien, relations sociales",
+  },
+] as const;
 
 const MECHANICS = [
   {
@@ -134,10 +154,48 @@ export function MainMenu() {
         </div>
       </section>
 
+      {/* ——— Inspirations : GTA V × The Sims ——— */}
+      <section
+        aria-labelledby="inspirations-title"
+        className="bg-game-bg text-game-text"
+      >
+        <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <h2
+            id="inspirations-title"
+            className="text-2xl font-black tracking-tight sm:text-3xl"
+          >
+            Nos inspirations
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-game-muted sm:text-base">
+            Deux géants du jeu vidéo, un seul décor : Babi.
+          </p>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+            {INSPIRATIONS.map(({ icon: Icon, color, title, text }) => (
+              <li key={title}>
+                <div className="game-panel border-tricolore h-full rounded-xl p-5">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-game-bg/60"
+                      aria-hidden="true"
+                    >
+                      <Icon className={`size-5 ${color}`} />
+                    </span>
+                    <h3 className="text-base font-bold text-game-text">{title}</h3>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-game-muted">
+                    {text}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ——— Mini-cards mécaniques ——— */}
       <section
         aria-labelledby="mechanics-title"
-        className="bg-game-bg text-game-text"
+        className="border-t border-game-panel bg-game-bg text-game-text"
       >
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
           <h2 id="mechanics-title" className="sr-only">
