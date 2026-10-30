@@ -568,31 +568,34 @@ export const MISSIONS: MissionDef[] = [
 ];
 
 export const GLOSSARY: GlossaryEntry[] = [
-  { word: "Apprenti gbaka", def: "Assistant du conducteur d'un gbaka : il aide à organiser la montée et la descente des passagers et annonce les destinations." },
+  { word: "Apprenti gbaka", def: "Receveur qui assiste le conducteur d'un minicar de transport collectif : il participe à la prise en charge des passagers et à l'encaissement du transport." },
   { word: "Babi", def: "Abidjan. « Babi la belle », la ville qui bouge." },
+  { word: "Balanceur", def: "Dans le transport en gbaka, aide affecté au véhicule qui encaisse le prix du trajet auprès des passagers." },
   { word: "C'est gâté", def: "C'est foutu, la situation est perdue." },
   { word: "Cireur de chaussures", def: "Personne qui nettoie et fait briller les chaussures de ses clients, souvent dans les lieux passants." },
-  { word: "Djassaman", def: "Nom de métier proposé pour une voie de progression du jeu ; sens précis et orthographe à confirmer avec des locuteurs ivoiriens." },
+  { word: "Djassa", def: "Marché populaire, souvent associé au commerce de produits à prix abordables ; le terme est aussi employé pour parler du marché noir." },
+  { word: "Djassaman", def: "Commerçant du djassa. Le mot est formé à partir de « djassa » (marché noir ou marché populaire) et du suffixe « -man »." },
   { word: "Djossi", def: "Petit boulot, travail informel." },
   { word: "Enjaillement", def: "Fête, joie, ambiance exubérante." },
   { word: "Fôô", def: "Calme, tranquille, sans problème." },
-  { word: "Gbaka", def: "Minibus de transport collectif populaire à Abidjan." },
+  { word: "Gbaka", def: "Minicar de transport en commun utilisé notamment à Abidjan." },
   { word: "Gbê", def: "« Ça marche ! », d'accord, c'est validé." },
   { word: "Gnamankoudji", def: "Expression de satisfaction : « délicieux ! »" },
   { word: "Gbonhi", def: "Bande d'amis, groupe du quartier." },
   { word: "Gosser", def: "Se disputer, s'embrouiller." },
   { word: "La go", def: "La fille, la copine." },
-  { word: "Livreur de boisson", def: "Personne qui transporte et livre des boissons aux commerces, maquis, événements ou particuliers." },
-  { word: "Livreur de pain", def: "Personne qui distribue le pain aux boutiques, kiosques, restaurants ou clients." },
+  { word: "Livreur de boisson", def: "Personne chargée d'acheminer des boissons vers des commerces, maquis, événements ou particuliers." },
+  { word: "Livreur de pain", def: "Personne chargée de distribuer le pain aux boutiques, kiosques, restaurants ou clients." },
   { word: "Microbes", def: "Terme populaire désignant des groupes de jeunes délinquants ; à employer avec discernement dans les dialogues." },
   { word: "Môgô", def: "Pote, mec, frérot." },
   { word: "Pakè", def: "Beaucoup, en grande quantité." },
-  { word: "Tantie bagage", def: "Personne qui propose de porter ou d'aider à transporter les bagages dans une gare ou un marché." },
+  { word: "Tantie bagage", def: "Cri utilisé sur les marchés pour proposer de porter les achats ou les bagages des clientes. Le terme désigne notamment des jeunes filles porteuses ; le jeu doit traiter ce phénomène avec un regard critique et ne pas valoriser le travail des enfants." },
   { word: "Tchen", def: "L'argent, le billet." },
-  { word: "Wotro", def: "Nom de métier proposé pour une voie de progression du jeu ; sens précis et orthographe à confirmer avec des locuteurs ivoiriens." },
+  { word: "Wotro", def: "Charrette de type pousse-pousse utilisée pour transporter des marchandises, notamment dans les marchés." },
+  { word: "Wotrotigui", def: "Personne qui pousse ou conduit un wotro et transporte des marchandises pour des commerçants ou des clients." },
   { word: "Yako", def: "Expression de compassion : « courage pour la galère »." },
   { word: "Zantra", def: "Rabatteur qui attire les clients dans les maquis/boîtes." },
-];
+];;
 
 /** Textes d'intro (écran de création et dialogue d'ouverture) */
 export const INTRO_TEXT =
