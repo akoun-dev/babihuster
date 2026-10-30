@@ -1,6 +1,21 @@
-# Z.ai Code Scaffold — Projet sous gouvernance multi-agents
+# Abidjan Hustle — Le Rêve Ivoirien 🇨🇮
 
-Application Next.js 16 (App Router) + TypeScript 5 + React 19, prise en charge par un **système multi-agents autonome** de développement, normalisation, test et suivi de projet.
+**Vertical Slice Web jouable** d'un jeu de vie 100 % ivoirien (Next.js 16), sous gouvernance multi-agents. Quartier unique : **Yopougon** — djossi, garba, tontine, dash, enjaillement, microbes… On a mis le pays !
+
+> Jouable sur la route `/` : crée ton môgô, gère tes jauges (faim, énergie, moral, hygiène), gagne des FCFA, négocie le nouchi, survis aux coupures CIE et aux contrôles de police, et enchaîne les missions (M1 « L'arrivée au pays » → M3 « L'enjaillement du siècle »).
+
+## 🎮 Le jeu
+
+| Système | Description |
+|---|---|
+| Moteur pur | `src/lib/game/engine.ts` (fonctions pures, invariants garantis, testable) |
+| Données | `src/lib/game/data.ts` — zones, actions, PNJ, missions, glossaire nouchi (équilibrage documenté) |
+| État | `src/lib/game/store.ts` — Zustand + `persist` localStorage (auto-save à chaque jour) |
+| Cloud save | 1 slot anonyme par appareil (`SaveGame` Prisma + `POST /api/game/save`, `GET /api/game/load`) |
+| UI | `src/components/guest/**` (acteur JOUEUR) — HUD, carte, actions, dialogues, événements, missions |
+| Palette | Tokens `--game-*` (Noir Maquis, Terre Rouge, Soleil Ivoire, tricolore ivoirien…) — normative, issue du GDD |
+
+Spécifications complètes : `.ai/SPECS/FEATURE-001_UX.md` · `_SPEC.md` · `_TECH.md` · décision d'architecture : `.ai/ADR/ADR-003-vertical-slice-web.md`.
 
 ## 🚀 Démarrage
 
@@ -64,5 +79,6 @@ Un dossier par acteur (`guest/`, puis tout futur rôle) ; `shared/` = agnostique
 
 - ✅ Gouvernance et pilotage en place
 - ✅ Normalisation P0 : layout sémantique, header, footer sticky, accessibilité socle
-- 🔜 Authentification et rôles : en attente de décision produit
-- ⛔ Fonctionnalités métier : en attente du cahier des charges
+- ✅ **FEAT-001 — Abidjan Hustle Vertical Slice : boucle de jeu complète, validée E2E**
+- 🔜 Authentification et multi-slots : en attente de décision produit (R-002)
+- 🔜 Roadmap jeu : audio, autres quartiers (Plateau, Adjamé), conduite, business (GDD §S4-S8)

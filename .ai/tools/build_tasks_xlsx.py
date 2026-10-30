@@ -52,7 +52,17 @@ tasks = [
     ["T-007", "Qualité", "Revue de code indépendante du livrable T-004", "AGENT REVIEWER", "P1", "Terminé", 1.0, TODAY, TODAY, "Rapport de revue (HANDOFFS HO-001)", "OUI", "Verdict : approuvé avec réserves — MAJ-01/MIN-01 corrigés puis re-vérifiés"],
     ["T-008", "Qualité", "Vérification E2E navigateur (rendu + interactions)", "AGENT 2 — QA", "P1", "Terminé", 1.0, TODAY, TODAY, "Constat E2E (TEAM_STATUS.md)", "OUI", "Footer sticky prouvé 844/844 ; 0 débordement 320/390/768px ; ancres OK"],
     ["T-009", "DevOps", "Commit normalisé de la gouvernance + normalisation P0", "AGENT COMMIT", "P1", "Terminé", 1.0, TODAY, TODAY, "3 commits conventionnels (chore/feat/docs) + clôture", "OUI", "db/, upload/, .zscripts/, skills/, download/ exclus du git"],
-    ["T-010", "Produit", "Cahier des charges / premier backlog produit (attente utilisateur)", "PRODUCT OWNER", "P0", "Bloqué", 0.0, "", "", "SPECS/FEATURE-001", "", "Dépendance externe : utilisateur"],
+    ["T-010", "Produit", "Cahier des charges : REÇU (GDD Abidjan Hustle + backlog + palette)", "PRODUCT OWNER", "P0", "Terminé", 1.0, TODAY, TODAY, "Cahier des charges utilisateur (chat)", "OUI", "Débloque FEAT-001 — scope adapté en Vertical Slice Web (ADR-003)"],
+    ["T-011", "FEAT-001 · Phase 0-3", "Specs UX/SPEC/TECH + ADR-003 + matrice acteurs", "AGENT 1 + AGENT 2 + UX", "P0", "Terminé", 1.0, TODAY, TODAY, ".ai/SPECS/FEATURE-001_*.md, ADR-003, ACTORS.md", "OUI", "Validation UX par AGENT 2 acquise"],
+    ["T-012", "FEAT-001 · Phase 4", "Game core pur : types, data (Yopougon, nouchi, missions), moteur, store", "AGENT 1 / DEV FULLSTACK", "P0", "Terminé", 1.0, TODAY, TODAY, "src/lib/game/** (4 modules)", "OUI (E2E)", "Bug double-jour détecté puis corrigé (LL-005)"],
+    ["T-013", "FEAT-001 · Phase 4", "Backend cloud save : Prisma SaveGame + API save/load (zod)", "DEV BACKEND", "P0", "Terminé", 1.0, TODAY, TODAY, "schema.prisma + /api/game/save + /api/game/load", "OUI (DB row vérifiée)", "1 slot anonyme par deviceId ; jamais de 500 sur absence"],
+    ["T-014", "FEAT-001 · Phase 4", "UI du jeu : 16 composants guest/ + page unique + thème --game-*", "DEV FRONTEND (sous-agent)", "P0", "Terminé", 1.0, TODAY, TODAY, "src/components/guest/**, page.tsx, Header/Footer, globals.css", "En attente revue → faite", "Lint 0, tsc 0 ; footer sticky intouché"],
+    ["T-015", "FEAT-001 · Phase 5", "Intégration + correctif moteur + lint/tsc", "AGENT 1", "P0", "Terminé", 1.0, TODAY, TODAY, "engine.ts corrigé (LL-005)", "OUI", "J1→J2 exact ; stats résumé exactes"],
+    ["T-016", "FEAT-001 · Phase 5", "E2E navigateur : gold path complet du jeu", "AGENT 2 — QA", "P0", "Terminé", 1.0, TODAY, TODAY, "Parcours vérifié jusqu'à M1 done + cloud save DB + mobile 390px", "OUI", "0 erreur console ; 0 débordement ; events, tontine, missions OK"],
+    ["T-017", "FEAT-001 · Phase 5", "Revue indépendante (checklist greps + qualifications)", "AGENT REVIEWER", "P1", "Terminé", 1.0, TODAY, TODAY, "HO-002 (preuves grep)", "OUI", "0 fetch UI ; mutations store uniquement ; shared sans logique jeu"],
+    ["T-018", "FEAT-001 · Phase 6", "Documentation finale (README jeu, journal, lessons)", "AGENT DOCUMENTATION", "P1", "Terminé", 1.0, TODAY, TODAY, "README.md + LESSONS_LEARNED + HANDOFFS", "OUI", ""],
+    ["T-019", "FEAT-001 · Phase 6", "Commits conventionnels FEAT-001", "AGENT COMMIT", "P1", "En cours", 0.8, TODAY, "", "git log conventionnel", "", "3 commits atomiques prévus"],
+    ["T-020", "FEAT-001 · Phase 7-8", "AUDIT-002 + rétrospective + rapport final", "AGENT AUDIT GLOBAL", "P1", "En cours", 0.6, TODAY, "", ".ai/AUDITS/AUDIT-002-FEAT-001.md", "", "En cours de clôture"],
 ]
 DATA_START = 5
 for i, row in enumerate(tasks):
@@ -104,7 +114,7 @@ for c, h in enumerate(HEADERS_F, 2):
 style_header_row(ws2, 4, 2, LAST_COL_F)
 
 features = [
-    ["FEAT-000", "En attente de cahier des charges", "—", "", "", "", "", "PRODUCT OWNER", "Bloqué", "Aucune feature métier demandée — le système est prêt à encaisser"],
+    ["FEAT-001", "Abidjan Hustle — Le Rêve Ivoirien (Vertical Slice Web)", "6 — Validation & Doc", ".ai/SPECS/FEATURE-001_UX.md (validée AGENT 2)", ".ai/SPECS/FEATURE-001_SPEC.md (F-01→F-17)", ".ai/SPECS/FEATURE-001_TECH.md + ADR-003", "T-011→T-019 (TASKS)", "AGENT 1 + équipe", "En validation", "Boucle complète E2E validée ; doc + audit en cours"],
 ]
 for i, row in enumerate(features):
     r = 5 + i
@@ -192,10 +202,14 @@ risks = [
      "Décider du modèle d'authentification lors du premier cahier des charges (voir .ai/ACTORS.md)", "PRODUCT OWNER", "Ouvert"],
     ["R-003", "Risque environnement", "Avertissement cross-origin du serveur dev (preview sandbox) — allowedDevOrigins", "Faible", "Certaine",
      "Limité au sandbox ; documenté, aucune action bloquante", "DEVOPS", "Accepté"],
-    ["D-001", "Dette data", "Schéma Prisma scaffold (User/Post) sans rôles ni permissions", "Élevé", "—",
-     "Redéfinir le schéma à la première feature (matrice acteurs de .ai/ACTORS.md)", "DEV FULLSTACK/DATA", "Ouvert"],
-    ["D-002", "Dette qualité", "Version 'v0.2.1' en dur dans Header/Footer ; aucune source unique", "Faible", "—",
-     "Centraliser la version dans une constante partagée lors de la première évolution", "DEV FRONTEND", "Ouvert"],
+    ["R-004", "Risque équilibrage", "Dash de police (1 000-5 000 F) brutal vs gains de djossi (300-5 000 F) : peut ruiner un débutant en 2 contrôles", "Moyen", "Certaine",
+     "Filet de sécurité F-13 en place ; ajuster dans data.ts au retour des premiers testeurs (consultants culturels)", "GAME DESIGN", "Ouvert"],
+    ["D-001", "Dette data", "Schéma Prisma : modèle SaveGame ajouté ; User/Post scaffold conservés sans rôles", "Faible", "—",
+     "Nettoyer User/Post lors de l'ajout d'une vraie authentification (R-002)", "DEV FULLSTACK/DATA", "Ouvert"],
+    ["D-002", "Dette qualité", "Version centralisée dans app-config.ts (résolu FEAT-001) ; reste : BrandMark factorisable", "Faible", "—",
+     "Factoriser le bloc logo lors de la prochaine évolution d'identité visuelle", "DEV FRONTEND", "Partiel"],
+    ["D-003", "Dette jeu", "Reload pendant le résumé de jour : stats affichées dégradées (assumé, documenté HO-002)", "Faible", "—",
+     "Migrer dayStats vers un journal dédié si les testeurs le signalent", "AGENT 1", "Ouvert"],
 ]
 for i, row in enumerate(risks):
     r = 5 + i
@@ -219,12 +233,13 @@ for c, h in enumerate(HEADERS_J, 2):
 style_header_row(ws6, 4, 2, LAST_COL_J)
 
 journal = [
-    [TODAY, "AGENT 1", "Standup", "Initialisation du système. Analyse complète terminée : scaffold Next.js 16 vierge, aucune feature, aucun acteur métier."],
-    [TODAY, "AGENT AUDIT GLOBAL", "Audit", "AUDIT-001 clôturé : gouvernance .ai/ créée, dette tracée (5 entrées), normalisation P0 lancée."],
-    [TODAY, "DEV FRONTEND", "Livraison", "T-004 livré : layout min-h-screen flex flex-col + footer sticky mt-auto, séparation shared/guest amorcée, lint clean."],
-    [TODAY, "AGENT REVIEWER", "Revue", "T-007 : verdict APPROUVÉ AVEC RÉSERVES. MAJ-01 (reduced-motion du SVG), MIN-01 (labels mobile), 3 suggestions appliquées ; débordement 320px corrigé (masquage texte marque < 400px). Re-vérifié : 0 débordement à 320/390/768px."],
-    [TODAY, "AGENT 2 — QA", "Test", "T-008 E2E : rendu desktop/mobile OK, ancres #stack/#statut fonctionnelles, footer sticky prouvé (844/844 sur page courte, poussé naturellement sur page longue), API /api OK, 0 erreur console, skip-link conforme (sr-only)."],
     [TODAY, "PRODUCT OWNER", "Décision", "Système opérationnel et en attente du cahier des charges. AUCUNE feature ne sera inventée sans spécification utilisateur."],
+    [TODAY, "PRODUCT OWNER", "Déblocage", "T-010 débloquée : cahier des charges « Abidjan Hustle » reçu (GDD, backlog 54 US, palette). Adaptation en Vertical Slice Web (ADR-003) — le GDD lui-même prescrit de commencer petit."],
+    [TODAY, "AGENT 1", "Standup", "Phases 0-3 bouclées en une passe : specs UX/SPEC/TECH + ADR-003. Game core pur écrit (4 modules) puis backend cloud save. UI déléguée au sous-agent frontend."],
+    [TODAY, "DEV FRONTEND", "Livraison", "T-014 : 16 composants guest/ livrés, lint 0, tsc 0, parcours navigué. BUG MOTEUR détecté (double saut de jour) et signalé — c'est la revue croisée qui paye."],
+    [TODAY, "AGENT 1", "Correctif", "LL-005 : engine.ts dormir() ne pose plus que pendingSummary. Re-vérifié E2E : J1→J2 exact, résumé avec gains/dépenses exacts."],
+    [TODAY, "AGENT 2 — QA", "Test", "T-016 E2E complet : création → intro Momoh → Gbaka/Jakarta/pied → jobs → events (police dash + tchatche, ambulant) → M1 offerte/acceptée/steps/done (+300F, +5 rep) → tontine débloquée → cloud save en DB (Zézé, 2029 octets) → J1→J4 → mobile 390px sans débordement → 0 erreur console."],
+    [TODAY, "AGENT REVIEWER", "Revue", "T-017 conforme par preuves grep : 0 fetch dans les composants, 0 mutation moteur importée par l'UI (lectures pures uniquement), shared/ sans logique de jeu, footer sticky intact."],
 ]
 for i, row in enumerate(journal):
     r = 5 + i

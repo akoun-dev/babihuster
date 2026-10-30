@@ -33,3 +33,14 @@ Chaque transfert de responsabilité entre agents est tracé ici (règle TEAM_ARC
   - MIN-02 documenté (commentaire explicite dans Footer.tsx, cf. LL-003/D-002).
   - Suggestions appliquées : `tabIndex={-1}` sur `<main>`, `alt=""` sur le logo du hero.
   - Suggestion BrandMark factorisé : reportée volontairement (dette D-002, décision Tech Lead).
+
+### HO-002 — FEAT-001 livrée par DEV FRONTEND (T-014) → AGENT 1/QA (T-015→T-017)
+- De : DEV FRONTEND + UX/UI DESIGNER (sous-agent) → Vers : AGENT 1 + AGENT 2 + AGENT REVIEWER
+- Date : 2026-10-30
+- Contexte : UI complète du jeu Abidjan Hustle (16 fichiers guest/ + app-config + header/footer/globals adaptés).
+- Livrables transmis : GameShell, MainMenu, CharacterCreation, GameView, GameHUD, CityMap, TransportPicker, ActionPanel, DialogueBox, EventDialog, DaySummary, MissionSheet, JournalLog, GlossarySheet, HowToPlay, NouchiText, icons.ts.
+- Points d'attention transmis :
+  1. BUG MOTEUR détecté (double saut de jour) → corrigé par AGENT 1 dans engine.ts (dormir ne fait que poser pendingSummary) et re-vérifié E2E (J1→J2 exact, stats exactes).
+  2. Casts `as GameState` dans GameHUD/TransportPicker — sûrs (rendus derrière la garde GameView).
+  3. Gate d'hydratation via useSyncExternalStore (règle eslint react-hooks Next 16).
+- Clôture réception : **2026-10-30 — AGENT 1**. Revue par checklist (greps : 0 fetch UI, 0 mutation moteur dans l'UI, shared sans logique jeu) + E2E complet orchestrateur (gold path jusqu'à M1 done, cloud save en DB, mobile 390px, 0 erreur console, 0 débordement). ✅
