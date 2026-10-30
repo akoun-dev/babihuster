@@ -66,3 +66,6 @@ server.log
 
 # dossier de téléchargement du sandbox
 /download/
+
+# artefacts de outils sandbox
+/tool-results/
