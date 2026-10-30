@@ -41,6 +41,37 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* ——— Tokens jeu « Abidjan Hustle » (FEATURE-001_UX §11, normatifs) ———
+     Enregistrés dans @theme pour générer les utilitaires game-*. */
+  --color-game-bg: var(--game-bg);
+  --color-game-panel: var(--game-panel);
+  --color-game-text: var(--game-text);
+  --color-game-muted: var(--game-muted);
+  --color-game-terre: var(--game-terre);
+  --color-game-soleil: var(--game-soleil);
+  --color-game-vert: var(--game-vert);
+  --color-game-orange: var(--game-orange);
+  --color-game-nuit: var(--game-nuit);
+  --color-game-alerte: var(--game-alerte);
+  --color-game-hygiene: var(--game-hygiene);
+}
+
+/* ————————————————————————————————————————————————————————————————————————
+   Palette du jeu « Abidjan Hustle » — FEATURE-001_UX §11 (normative).
+   Bloc indépendant : n'écrase aucun token shadcn existant.
+   ———————————————————————————————————————————————————————————————————————— */
+:root {
+  --game-bg: #1a1410; /* Noir Maquis — fond principal */
+  --game-panel: #3a2e24; /* Panneaux / cartes */
+  --game-text: #f5f1e8; /* Blanc Harmattan — texte principal */
+  --game-muted: #a89a82; /* Texte secondaire */
+  --game-terre: #b5451b; /* Terre Rouge — signature / réputation */
+  --game-soleil: #f4b942; /* Soleil Ivoire — or / XP / faim */
+  --game-vert: #009a44; /* Vert Ivoirien — succès / moral */
+  --game-orange: #f37021; /* Orange Ivoirien — objectif / énergie */
+  --game-nuit: #1b3a5c; /* Bleu Nuit — nuit / mélancolie */
+  --game-alerte: #c43d2f; /* Alerte — journal « bad » */
+  --game-hygiene: #4fa8c9; /* Jauge hygiène */
 }
 
 :root {
@@ -119,6 +150,72 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ————————————————————————————————————————————————————————————————————————
+   Classes utilitaires du jeu (FEATURE-001_UX §11 / TECH §6).
+   ———————————————————————————————————————————————————————————————————————— */
+
+/* Panneau de jeu : fond Terre brûlée + bordure subtile claire. */
+.game-panel {
+  background-color: var(--game-panel);
+  color: var(--game-text);
+  border: 1px solid rgb(245 241 232 / 0.14);
+}
+
+/* Bordure « enseigne maquis » tricolore ivoirienne (haut de l'élément).
+   Nécessite position:relative (inclus) — compatible border-radius. */
+.border-tricolore {
+  position: relative;
+  overflow: hidden;
+}
+.border-tricolore::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #f37021 0 33.3%,
+    #ffffff 33.3% 66.6%,
+    #009a44 66.6% 100%
+  );
+  pointer-events: none;
+}
+
+/* Dégradé héros « coucher de soleil sur la lagune » (menu principal). */
+.gradient-lagune {
+  background-image: linear-gradient(
+    180deg,
+    #e8856c 0%,
+    #f4b942 52%,
+    #2d6a4f 100%
+  );
+}
+
+/* Zone cliquable active sur la carte : bordure Terre Rouge (UX §6). */
+.game-zone-active {
+  border-color: var(--game-terre);
+  box-shadow: 0 0 0 1px var(--game-terre);
+}
+
+/* Pulsation d'alerte des jauges < 25 % (UX §6) — désactivée par
+   prefers-reduced-motion via la media query globale ci-dessous. */
+@keyframes game-need-alert {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.game-need-alert {
+  animation: game-need-alert 1.2s ease-in-out infinite;
+}
+/* Variante pour jauges shadcn Progress : seul l'indicateur pulse. */
+.game-need-alert [data-slot="progress-indicator"] {
+  animation: game-need-alert 1.2s ease-in-out infinite;
 }
 
 /* Accessibilité : désactive les animations/transitions du document pour les

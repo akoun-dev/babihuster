@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { APP_NAME, APP_TAGLINE, APP_VERSION } from "@/lib/app-config";
 
 /**
  * Footer partagé — acteur : shared (tous acteurs).
@@ -8,12 +9,14 @@ import { Badge } from "@/components/ui/badge";
  *   (`min-h-screen flex flex-col`) + `mt-auto` sur ce footer. Contenu court
  *   → collé en bas ; contenu long → poussé naturellement, jamais en overlay.
  * - Respecte la safe-area iOS via `pb-[env(safe-area-inset-bottom)]`.
+ * - Version centralisée dans `src/lib/app-config.ts` (dette D-002 réglée :
+ *   plus aucune version codée en dur dans les composants).
  *
  * @module shared/layout/Footer
  */
 export function Footer() {
   // Année figée au build (server component statique) — décision assumée et tracée
-  // dans .ai/LESSONS_LEARNED.md (LL-003) et .ai/TASKS.xlsx (D-002).
+  // dans .ai/LESSONS_LEARNED.md (LL-003).
   const year = new Date().getFullYear();
 
   return (
@@ -29,16 +32,16 @@ export function Footer() {
             className="size-6 shrink-0"
           />
           <p className="text-sm text-muted-foreground">
-            Z.ai Scaffold — socle de développement Next.js
+            {APP_NAME} — {APP_TAGLINE}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <Badge variant="outline" className="text-muted-foreground">
-            v0.2.1
+            v{APP_VERSION}
           </Badge>
           <p className="text-sm text-muted-foreground">
-            © {year} Z.ai — développement assisté par IA
+            © {year} {APP_NAME} — vertical slice web
           </p>
         </div>
       </div>

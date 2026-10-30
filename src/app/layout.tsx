@@ -17,37 +17,38 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Z.ai Code Scaffold",
-    template: "%s | Z.ai Code Scaffold",
+    default: "Abidjan Hustle — Le Rêve Ivoirien",
+    template: "%s | Abidjan Hustle",
   },
   description:
-    "Socle de développement Next.js 16 avec TypeScript 5, Tailwind CSS 4 et shadcn/ui, optimisé pour le développement assisté par IA avec Z.ai.",
+    "RPG de vie à Abidjan (Yopougon) : djossi, tontine, nouchi et enjaillement. Vertical slice web jouable dans le navigateur.",
   keywords: [
-    "Z.ai",
+    "Abidjan Hustle",
+    "jeu",
+    "RPG",
+    "Abidjan",
+    "Yopougon",
+    "nouchi",
+    "vertical slice",
     "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-    "shadcn/ui",
-    "développement assisté par IA",
-    "React",
   ],
-  authors: [{ name: "Z.ai Team" }],
+  authors: [{ name: "Abidjan Hustle" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
+    title: "Abidjan Hustle — Le Rêve Ivoirien",
     description:
-      "Socle Next.js 16 pour un développement assisté par IA avec une stack React moderne.",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+      "RPG de vie à Yopougon : djossi, tontine, nouchi et enjaillement, jouable dans le navigateur.",
+    url: "/",
+    siteName: "Abidjan Hustle",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
+    title: "Abidjan Hustle — Le Rêve Ivoirien",
     description:
-      "Socle Next.js 16 pour un développement assisté par IA avec une stack React moderne.",
+      "RPG de vie à Yopougon : djossi, tontine, nouchi et enjaillement, jouable dans le navigateur.",
   },
 };
 
