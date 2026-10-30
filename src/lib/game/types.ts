@@ -12,13 +12,21 @@ export type TransportId = "pied" | "gbaka" | "jakarta";
 
 export type NeedId = "faim" | "energie" | "moral" | "hygiene";
 
-export type Outfit = "pagne" | "streetwear" | "costard";
+/** Tenues par palier de progression (T-024, FEATURE-004) — voir OUTFITS (data.ts).
+ * debutant < streetwear < bomber < costard (master prompt §4 : la tenue évolue avec le joueur). */
+export type Outfit = "debutant" | "streetwear" | "bomber" | "costard";
 
 /** Coiffure du personnage (T-023, FEATURE-003) — voir HAIRSTYLES (data.ts) */
 export type HairId = "rase" | "coupe" | "degrade" | "dreads" | "tresses" | "afro";
 
 /** Teinte de peau du personnage (T-023, FEATURE-003) — voir SKIN_TONES (data.ts) */
 export type SkinId = "noisette" | "cafe" | "chocolat" | "ebene";
+
+/** Barbe du personnage (T-024, FEATURE-004) — voir BEARDS (data.ts) */
+export type BeardId = "aucune" | "moustache" | "bouc" | "barbe";
+
+/** Expression du visage (T-024, FEATURE-004) — pilotée par le moral en jeu (master prompt §6.6) */
+export type MoodId = "neutre" | "heureux" | "determine" | "surpris" | "contrarie";
 
 export type MissionId = "m1" | "m2" | "m3";
 
@@ -93,14 +101,16 @@ export interface TontineState {
 
 /** État complet, sérialisable (localStorage + cloud). version pour migrations. */
 export interface GameState {
-  /** v1 = avant avatar (T-023) ; v2 = coiffure + peau. Anciennes saves migrées. */
-  version: 1 | 2;
+  /** v1 = pré-avatar ; v2 = coiffure + peau (T-023) ; v3 = paliers tenue + barbe (T-024). */
+  version: 1 | 2 | 3;
   name: string;
   outfit: Outfit;
   /** v2 — absent des saves v1 (défaut appliqué à la migration) */
   hair?: HairId;
   /** v2 — absent des saves v1 (défaut appliqué à la migration) */
   skin?: SkinId;
+  /** v3 — absent des saves v1/v2 (défaut « aucune » appliqué à la migration) */
+  beard?: BeardId;
   day: number;
   minute: number; // 360 (06:00) → 1560 max (02:00 affiché)
   money: number;
@@ -162,6 +172,19 @@ export interface SkinDef {
   label: string;
   /** Couleur hex du visage rendu par Avatar */
   color: string;
+}
+
+/** Définition d'une barbe (data.ts) */
+export interface BeardDef {
+  id: BeardId;
+  label: string;
+  desc: string;
+}
+
+/** Définition d'une expression (data.ts) — chips de prévisualisation */
+export interface MoodDef {
+  id: MoodId;
+  label: string;
 }
 
 export interface TransportDef {

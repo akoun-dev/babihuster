@@ -17,6 +17,7 @@ import {
 } from "./data";
 import type {
   ActionDef,
+  BeardId,
   GameState,
   HairId,
   JournalKind,
@@ -483,13 +484,15 @@ export function newGameState(
   outfit: Outfit,
   hair: HairId = "coupe",
   skin: SkinId = "cafe",
+  beard: BeardId = "aucune",
 ): GameState {
   const blank: GameState = {
-    version: 2,
+    version: 3,
     name: name.trim() || "Môgô",
     outfit,
     hair,
     skin,
+    beard,
     day: 1,
     minute: 420,
     money: START_MONEY,
@@ -520,18 +523,27 @@ export function newGameState(
 }
 
 /**
- * Migration look v1 → v2 (T-023) : les anciennes saves n'ont ni `hair` ni
- * `skin` — on applique les défauts (coupe courte, peau café) sans toucher
- * au reste de l'état. Idempotent (safe sur un état déjà v2).
+ * Migration look → v3 (T-023 + T-024) : les anciennes saves n'ont pas forcément
+ * `hair`/`skin` (v1), ni `beard` (v1/v2), et la tenue `pagne` a été retirée
+ * (master prompt §8 : pas de costume traditionnel caricatural → remappée
+ * « debutant »). Idempotent (safe sur un état déjà v3).
  */
-export function withLookDefaults<T extends { version?: number; hair?: HairId; skin?: SkinId }>(
+export function withLookDefaults<
+  T extends { version?: number; hair?: HairId; skin?: SkinId; outfit?: Outfit; beard?: BeardId },
+>(
   state: T,
-): T & { version: 1 | 2; hair: HairId; skin: SkinId } {
+): T & { version: 3; hair: HairId; skin: SkinId; outfit: Outfit; beard: BeardId } {
+  const ancienOutfit = (state as { outfit?: string }).outfit;
   return {
     ...state,
-    version: 2,
+    version: 3,
     hair: state.hair ?? "coupe",
     skin: state.skin ?? "cafe",
+    outfit:
+      ancienOutfit === "pagne" || !ancienOutfit
+        ? "debutant"
+        : (ancienOutfit as Outfit),
+    beard: state.beard ?? "aucune",
   };
 }
 
@@ -626,7 +638,7 @@ export function applyAction(state: GameState, actionId: string, rng: Rng = Math.
       break;
     case "tenue":
       s.inventory.tenueSoiree = true;
-      addLog(s, "Tenue de soirée en pagne : tu vas banana ce soir !", "good");
+      addLog(s, "Tenue de soirée achetée : tu vas banana ce soir !", "good");
       break;
     case "tontineJoin":
       s.tontine.member = true;

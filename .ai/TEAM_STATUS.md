@@ -31,6 +31,7 @@
 | **Voix onboarding (T-021, FEATURE-002)** | ██████████ 100 % | Pivot T-021b : Web Speech API `fr-FR` native navigateur (latence nulle, 0 serveur) — spec `.ai/SPECS/FEATURE-002_VOICE.md` |
 | Présentation inspirations (T-022) | ██████████ 100 % | Section « Nos inspirations » sur le menu : **GTA V** (monde ouvert, missions variées, humour noir) + **The Sims** (gestion du quotidien, relations sociales) — formulations utilisateur conservées verbatim |
 | **Avatar + voix v2 (T-023, FEATURE-003)** | ██████████ 100 % | Avatar SVG (6 coiffures × 4 peaux × 3 tenues) preview création + HUD ; save v2 + migration v1 prouvée (save injectée → defaults) ; fallback voix serveur `kazi` validé E2E (POST 200 → lecture → toggle stop) — specs FEATURE-003 + FEATURE-002 §10 |
+| **Personnage AAA (T-024, FEATURE-004)** | ██████████ 100 % | Avatar v2 semi-réaliste pleine silhouette (gradients peau/jean/cuir, visage expressif) ; 6 coiffures × 4 barbes × 4 peaux × **4 tenues à paliers** (debutant→streetwear→bomber→costard, pagne supprimé cf. master prompt §8) ; **5 expressions** pilotées par le moral (HUD) + test d'humeur à la création ; 2 planches concept art IA ; save v3 + migration pagne→debutant ; fix zod (hair/skin/beard persistés au cloud, 200 + row vérifiée `Zézé/v3/bouc`) — spec FEATURE-004 |
 
 ## Preuves QA FEAT-001 (règle anti-menterie)
 

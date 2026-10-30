@@ -19,9 +19,15 @@ const outcomeSchema = z.object({
 });
 
 const gameStateSchema = z.object({
-  version: z.literal(1),
+  version: z.union([z.literal(1), z.literal(2), z.literal(3)]),
   name: z.string().min(1).max(20),
-  outfit: z.enum(["pagne", "streetwear", "costard"]),
+  // "pagne" accepté en écriture pendant la transition (anciennes sessions v2).
+  outfit: z.enum(["debutant", "streetwear", "bomber", "costard", "pagne"]),
+  // Look T-023/T-024 — optionnels car absents des saves v1 ; doivent être
+  // persistés ici (sinon zod les striperait au round-trip cloud).
+  hair: z.enum(["rase", "coupe", "degrade", "dreads", "tresses", "afro"]).optional(),
+  skin: z.enum(["noisette", "cafe", "chocolat", "ebene"]).optional(),
+  beard: z.enum(["aucune", "moustache", "bouc", "barbe"]).optional(),
   day: z.number().int().positive(),
   minute: z.number().int().min(0).max(1560),
   money: z.number().int().min(0).max(9_999_999),

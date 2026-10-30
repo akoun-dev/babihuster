@@ -143,7 +143,7 @@ export function GameHUD() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-2 py-2 sm:px-4 lg:px-6">
         {/* ——— Ligne 1 : portrait, temps, argent, réputation, tontine, boutons ——— */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          {/* Mini-portrait du môgô (T-023) — v1 save sans look → défauts sûrs */}
+          {/* Mini-portrait du môgô (T-024 : cadrage portrait, barbe + humeur liée au moral) */}
           <div
             aria-hidden="true"
             className="hidden size-11 shrink-0 overflow-hidden rounded-lg border border-game-text/15 bg-game-panel sm:block"
@@ -152,6 +152,15 @@ export function GameHUD() {
               hair={game.hair ?? "coupe"}
               outfit={game.outfit}
               skin={game.skin ?? "cafe"}
+              beard={game.beard ?? "aucune"}
+              mood={
+                game.needs.moral >= 75
+                  ? "heureux"
+                  : game.needs.moral <= 30
+                    ? "contrarie"
+                    : "neutre"
+              }
+              framing="portrait"
               label=""
             />
           </div>

@@ -7,10 +7,13 @@
 
 import type {
   ActionDef,
+  BeardDef,
   GlossaryEntry,
   HairDef,
   MissionDef,
+  MoodDef,
   NpcDef,
+  Outfit,
   SkinDef,
   TransportDef,
   ZoneDef,
@@ -272,7 +275,7 @@ export const ACTIONS: ActionDef[] = [
     id: "acheterTenue",
     zone: "marche",
     label: "Tapement",
-    desc: "Un beau chemise en pagne pour l'enjaillement.",
+    desc: "Une belle chemise fraîche pour l'enjaillement.",
     icon: "Shirt",
     minutes: 30,
     cost: 2500,
@@ -668,8 +671,47 @@ export const SKIN_TONES: SkinDef[] = [
   { id: "ebene", label: "Ébène", color: "#62381F" },
 ];
 
-export const OUTFITS: Array<{ id: "pagne" | "streetwear" | "costard"; label: string; desc: string; color: string }> = [
-  { id: "pagne", label: "Pagne wax", desc: "Authentique et coloré. Le quartier te respecte.", color: "#B5451B" },
-  { id: "streetwear", label: "Streetwear", desc: "Casquette + basket. Style de Yop City.", color: "#F4B942" },
-  { id: "costard", label: "Chemise costard", desc: "Pour viser le Plateau… un jour.", color: "#2D6A4F" },
+/** Tenues par palier (T-024, FEATURE-004) — le style évolue avec la progression (master prompt §4). */
+export const OUTFITS: Array<{ id: Outfit; label: string; desc: string; color: string }> = [
+  {
+    id: "debutant",
+    label: "Modeste",
+    desc: "Tee-shirt simple, jean et sacoche usée. Tout le monde commence comme ça.",
+    color: "#B0632F",
+  },
+  {
+    id: "streetwear",
+    label: "Streetwear",
+    desc: "Hoodie frais et baskets propres. Le style Yop City.",
+    color: "#F4B942",
+  },
+  {
+    id: "bomber",
+    label: "Bomber premium",
+    desc: "Bomber sombre, chaîne en or, jean déchiré et boots. Le niveau au-dessus.",
+    color: "#8A8A85",
+  },
+  {
+    id: "costard",
+    label: "Tenue de boss",
+    desc: "Blazer net et chaussures en cuir. Le Plateau n'attend que toi.",
+    color: "#2D6A4F",
+  },
+];
+
+/** Barbes (T-024, FEATURE-004). */
+export const BEARDS: BeardDef[] = [
+  { id: "aucune", label: "Sans barbe", desc: "Net et frais, sortie de barbershop." },
+  { id: "moustache", label: "Moustache", desc: "Fine et discrète. Classe tranquille." },
+  { id: "bouc", label: "Bouc", desc: "Petit bouc de gosse de Yop." },
+  { id: "barbe", label: "Barbe courte", desc: "Taillée au rasoir. Le sérieux du patron." },
+];
+
+/** Expressions (T-024, FEATURE-004) — master prompt §6.6. */
+export const MOODS: MoodDef[] = [
+  { id: "neutre", label: "Neutre" },
+  { id: "heureux", label: "Content" },
+  { id: "determine", label: "Déterminé" },
+  { id: "surpris", label: "Surpris" },
+  { id: "contrarie", label: "Contrarié" },
 ];
