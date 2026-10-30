@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { NouchiText } from "@/components/guest/NouchiText";
+import { VoiceButton } from "@/components/guest/VoiceButton";
 
 export function CharacterCreation() {
   const setScreen = useGame((s) => s.setScreen);
@@ -53,9 +54,17 @@ export function CharacterCreation() {
         <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
           Crée ton môgô
         </h1>
-        <p className="game-panel mt-4 rounded-xl p-4 text-sm leading-relaxed text-game-text/90">
-          <NouchiText text={INTRO_TEXT} />
-        </p>
+        <div className="game-panel mt-4 rounded-xl p-4">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-game-muted">
+              Ton histoire
+            </span>
+            <VoiceButton text={INTRO_TEXT} srLabel="de ton histoire" />
+          </div>
+          <p className="text-sm leading-relaxed text-game-text/90">
+            <NouchiText text={INTRO_TEXT} />
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-8">
           {/* ——— Nom ——— */}

@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { GameIcon } from "@/components/guest/icons";
+import { VoiceButton } from "@/components/guest/VoiceButton";
 import { cn } from "@/lib/utils";
 
 const TIPS: ReadonlyArray<{
@@ -64,6 +65,9 @@ const TIPS: ReadonlyArray<{
   },
 ];
 
+/** Texte lu par la voix : les 6 leçons enchaînées (≈ 700 caractères < limite API). */
+const TIPS_VOICE_TEXT = TIPS.map((tip) => `${tip.title}. ${tip.text}`).join(" ");
+
 export interface HowToPlayProps {
   /** Déclencheur (Button) rendu via DialogTrigger asChild. */
   trigger: ReactNode;
@@ -77,10 +81,13 @@ export function HowToPlay({ trigger }: HowToPlayProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-h-[85vh] overflow-y-auto border-game-panel bg-game-bg text-game-text sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-game-text">
-            <HelpCircle className="size-5 text-game-soleil" aria-hidden="true" />
-            Comment jouer
-          </DialogTitle>
+          <div className="flex items-center justify-between gap-2 pr-6">
+            <DialogTitle className="flex items-center gap-2 text-game-text">
+              <HelpCircle className="size-5 text-game-soleil" aria-hidden="true" />
+              Comment jouer
+            </DialogTitle>
+            <VoiceButton text={TIPS_VOICE_TEXT} srLabel="des leçons" />
+          </div>
           <DialogDescription className="text-game-muted">
             Les règles de Yopougon, en 6 leçons, môgô.
           </DialogDescription>

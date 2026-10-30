@@ -14,6 +14,7 @@ import { npcById } from "@/lib/game/engine";
 import { useGame } from "@/lib/game/store";
 import { Button } from "@/components/ui/button";
 import { NouchiText } from "@/components/guest/NouchiText";
+import { VoiceButton } from "@/components/guest/VoiceButton";
 import { GameIcon } from "@/components/guest/icons";
 
 export function DialogueBox() {
@@ -44,14 +45,21 @@ export function DialogueBox() {
             />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-black text-game-soleil">
-              {npc?.name ?? dialogue.npcId}
-              {npc?.role && (
-                <span className="ml-2 text-xs font-medium text-game-muted">
-                  {npc.role}
-                </span>
-              )}
-            </p>
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-sm font-black text-game-soleil">
+                {npc?.name ?? dialogue.npcId}
+                {npc?.role && (
+                  <span className="ml-2 text-xs font-medium text-game-muted">
+                    {npc.role}
+                  </span>
+                )}
+              </p>
+              <VoiceButton
+                text={line}
+                srLabel={`de ${npc?.name ?? dialogue.npcId}`}
+                className="-mt-1"
+              />
+            </div>
             <p className="mt-1.5 text-sm leading-relaxed text-game-text">
               <NouchiText text={line} />
             </p>

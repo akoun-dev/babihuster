@@ -16,6 +16,7 @@ import { useGame } from "@/lib/game/store";
 import { APP_NAME, APP_TAGLINE } from "@/lib/app-config";
 import { Button } from "@/components/ui/button";
 import { NouchiText } from "@/components/guest/NouchiText";
+import { VoiceButton } from "@/components/guest/VoiceButton";
 import { GlossarySheet } from "@/components/guest/GlossarySheet";
 import { HowToPlay } from "@/components/guest/HowToPlay";
 
@@ -118,10 +119,18 @@ export function MainMenu() {
             />
           </div>
 
-          {/* Pitch complet : panneau sombre pour lisibilité + nouchi surligné */}
-          <p className="game-panel mt-10 max-w-2xl rounded-xl p-4 text-sm leading-relaxed text-game-text/90 shadow-xl sm:text-base">
-            <NouchiText text={INTRO_TEXT} />
-          </p>
+          {/* Pitch complet : panneau sombre pour lisibilité + nouchi surligné + voix */}
+          <div className="game-panel mt-10 max-w-2xl rounded-xl p-4 shadow-xl">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wide text-game-muted">
+                Ton histoire
+              </span>
+              <VoiceButton text={INTRO_TEXT} srLabel="de ton histoire" />
+            </div>
+            <p className="text-sm leading-relaxed text-game-text/90 sm:text-base">
+              <NouchiText text={INTRO_TEXT} />
+            </p>
+          </div>
         </div>
       </section>
 

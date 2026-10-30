@@ -1,6 +1,6 @@
 # TEAM_STATUS — VISIBILITÉ DE L'AVANCEMENT
 
-> Mis à jour à chaque évolution majeure. Dernière mise à jour : **2026-10-30 — FEAT-001 « Abidjan Hustle » livrée et validée**
+> Mis à jour à chaque évolution majeure. Dernière mise à jour : **T-021 — Voix de l'onboarding (FEATURE-002) livrée et auditée navigateur**
 
 ## 🟢 ÉTAT GLOBAL : FEAT-001 LIVRÉE (boucle de jeu complète validée E2E) — commits en cours (T-019) puis AUDIT-002 clôturé
 
@@ -28,6 +28,7 @@
 | **FEAT-001 Abidjan Hustle (T-010→T-018)** | ██████████ 100 % | Boucle de jeu complète E2E — missions M1→M3, tontine, dash, nouchi, cloud save |
 | DevOps FEAT-001 (T-019) | ████████░░ 80 % | Commits en cours |
 | Audit (T-020) | ████████░░ 80 % | AUDIT-002 rédigé |
+| **Voix onboarding (T-021, FEATURE-002)** | ██████████ 100 % | API TTS cache mémoire + hook `useVoice` + `VoiceButton` ×4 écrans ; audit navigateur OK (lecture, toggle, annulation, mobile) — spec `.ai/SPECS/FEATURE-002_VOICE.md` |
 
 ## Preuves QA FEAT-001 (règle anti-menterie)
 
@@ -46,3 +47,4 @@
 
 - Cahier des charges « Abidjan Hustle » reçu → adapté en Vertical Slice Web (ADR-003), livré et validé en une session.
 - Le sous-agent frontend a détecté un bug moteur critique (double saut de jour) → corrigé et re-vérifié (LL-005).
+- T-021 : voix TTS ajoutée à l'onboarding (menu, création, « Comment jouer », dialogue tuto) via `/api/game/tts` (SDK backend seul) — bug d'état « playing » détecté à l'audit et corrigé avant commit.
