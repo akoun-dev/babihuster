@@ -61,8 +61,8 @@ tasks = [
     ["T-016", "FEAT-001 · Phase 5", "E2E navigateur : gold path complet du jeu", "AGENT 2 — QA", "P0", "Terminé", 1.0, TODAY, TODAY, "Parcours vérifié jusqu'à M1 done + cloud save DB + mobile 390px", "OUI", "0 erreur console ; 0 débordement ; events, tontine, missions OK"],
     ["T-017", "FEAT-001 · Phase 5", "Revue indépendante (checklist greps + qualifications)", "AGENT REVIEWER", "P1", "Terminé", 1.0, TODAY, TODAY, "HO-002 (preuves grep)", "OUI", "0 fetch UI ; mutations store uniquement ; shared sans logique jeu"],
     ["T-018", "FEAT-001 · Phase 6", "Documentation finale (README jeu, journal, lessons)", "AGENT DOCUMENTATION", "P1", "Terminé", 1.0, TODAY, TODAY, "README.md + LESSONS_LEARNED + HANDOFFS", "OUI", ""],
-    ["T-019", "FEAT-001 · Phase 6", "Commits conventionnels FEAT-001", "AGENT COMMIT", "P1", "En cours", 0.8, TODAY, "", "git log conventionnel", "", "3 commits atomiques prévus"],
-    ["T-020", "FEAT-001 · Phase 7-8", "AUDIT-002 + rétrospective + rapport final", "AGENT AUDIT GLOBAL", "P1", "En cours", 0.6, TODAY, "", ".ai/AUDITS/AUDIT-002-FEAT-001.md", "", "En cours de clôture"],
+    ["T-019", "FEAT-001 · Phase 6", "Commits conventionnels FEAT-001", "AGENT COMMIT", "P1", "Terminé", 1.0, TODAY, TODAY, "feat(game) + feat(game-ui) + docs", "OUI", "3 commits atomiques ; commit UUID ff6b21e = automatisation sandbox (anodin, documenté AUDIT-002)"],
+    ["T-020", "FEAT-001 · Phase 7-8", "AUDIT-002 + rétrospective + rapport final", "AGENT AUDIT GLOBAL", "P1", "Terminé", 1.0, TODAY, TODAY, ".ai/AUDITS/AUDIT-002-FEAT-001.md + rapport", "OUI", "FEAT-001 : Validé — livré ; lessons LL-005/006 intégrées"],
 ]
 DATA_START = 5
 for i, row in enumerate(tasks):
@@ -114,7 +114,7 @@ for c, h in enumerate(HEADERS_F, 2):
 style_header_row(ws2, 4, 2, LAST_COL_F)
 
 features = [
-    ["FEAT-001", "Abidjan Hustle — Le Rêve Ivoirien (Vertical Slice Web)", "6 — Validation & Doc", ".ai/SPECS/FEATURE-001_UX.md (validée AGENT 2)", ".ai/SPECS/FEATURE-001_SPEC.md (F-01→F-17)", ".ai/SPECS/FEATURE-001_TECH.md + ADR-003", "T-011→T-019 (TASKS)", "AGENT 1 + équipe", "En validation", "Boucle complète E2E validée ; doc + audit en cours"],
+    ["FEAT-001", "Abidjan Hustle — Le Rêve Ivoirien (Vertical Slice Web)", "8 — Audit global clôturé", ".ai/SPECS/FEATURE-001_UX.md (validée AGENT 2)", ".ai/SPECS/FEATURE-001_SPEC.md (F-01→F-17)", ".ai/SPECS/FEATURE-001_TECH.md + ADR-003", "T-011→T-020 (TASKS)", "AGENT 1 + équipe", "Validé — livré", "AUDIT-002 clôturé ; boucle E2E complète"],
 ]
 for i, row in enumerate(features):
     r = 5 + i
@@ -239,7 +239,8 @@ journal = [
     [TODAY, "DEV FRONTEND", "Livraison", "T-014 : 16 composants guest/ livrés, lint 0, tsc 0, parcours navigué. BUG MOTEUR détecté (double saut de jour) et signalé — c'est la revue croisée qui paye."],
     [TODAY, "AGENT 1", "Correctif", "LL-005 : engine.ts dormir() ne pose plus que pendingSummary. Re-vérifié E2E : J1→J2 exact, résumé avec gains/dépenses exacts."],
     [TODAY, "AGENT 2 — QA", "Test", "T-016 E2E complet : création → intro Momoh → Gbaka/Jakarta/pied → jobs → events (police dash + tchatche, ambulant) → M1 offerte/acceptée/steps/done (+300F, +5 rep) → tontine débloquée → cloud save en DB (Zézé, 2029 octets) → J1→J4 → mobile 390px sans débordement → 0 erreur console."],
-    [TODAY, "AGENT REVIEWER", "Revue", "T-017 conforme par preuves grep : 0 fetch dans les composants, 0 mutation moteur importée par l'UI (lectures pures uniquement), shared/ sans logique de jeu, footer sticky intact."],
+    [TODAY, "AGENT COMMIT", "Livraison", "T-019 : 3 commits atomiques FEAT-001 (game core/backend, UI, docs). Commit UUID ff6b21e identifié comme généré par l'automatisation du sandbox (gitkeep mini-services) — anodin."],
+    [TODAY, "AGENT AUDIT GLOBAL", "Audit", "AUDIT-002 clôturé : FEAT-001 validée (conformité GDD, couches, acteurs, E2E). Rétrospective : revue croisée sous-agent→orchestrateur efficace (bug moteur attrapé) ; prochain chantier = équilibrage R-004 + audio."],
 ]
 for i, row in enumerate(journal):
     r = 5 + i
