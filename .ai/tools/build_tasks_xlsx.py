@@ -51,7 +51,7 @@ tasks = [
     ["T-006", "Documentation", "README.md racine (stack, conventions, pilotage)", "AGENT DOCUMENTATION", "P1", "Terminé", 1.0, TODAY, TODAY, "README.md", "OUI", ""],
     ["T-007", "Qualité", "Revue de code indépendante du livrable T-004", "AGENT REVIEWER", "P1", "Terminé", 1.0, TODAY, TODAY, "Rapport de revue (HANDOFFS HO-001)", "OUI", "Verdict : approuvé avec réserves — MAJ-01/MIN-01 corrigés puis re-vérifiés"],
     ["T-008", "Qualité", "Vérification E2E navigateur (rendu + interactions)", "AGENT 2 — QA", "P1", "Terminé", 1.0, TODAY, TODAY, "Constat E2E (TEAM_STATUS.md)", "OUI", "Footer sticky prouvé 844/844 ; 0 débordement 320/390/768px ; ancres OK"],
-    ["T-009", "DevOps", "Commit normalisé de la gouvernance + normalisation P0", "AGENT COMMIT", "P1", "À faire", 0.0, "", "", "Git log conventionnel", "", "feat: ... puis docs: ..."],
+    ["T-009", "DevOps", "Commit normalisé de la gouvernance + normalisation P0", "AGENT COMMIT", "P1", "Terminé", 1.0, TODAY, TODAY, "3 commits conventionnels (chore/feat/docs) + clôture", "OUI", "db/, upload/, .zscripts/, skills/, download/ exclus du git"],
     ["T-010", "Produit", "Cahier des charges / premier backlog produit (attente utilisateur)", "PRODUCT OWNER", "P0", "Bloqué", 0.0, "", "", "SPECS/FEATURE-001", "", "Dépendance externe : utilisateur"],
 ]
 DATA_START = 5

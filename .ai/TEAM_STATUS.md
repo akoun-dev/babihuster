@@ -14,7 +14,7 @@
 | UX/UI DESIGNER | ✅ Livré | T-004 | En veille |
 | AGENT DOCUMENTATION | ✅ Livré | T-006 terminé (README racine) | Maintien continu |
 | AGENT REVIEWER | ✅ Livré | T-007 : APPROUVÉ AVEC RÉSERVES → réserves corrigées + re-vérifiées | En veille |
-| AGENT COMMIT | 🟡 En cours | T-009 : commits normalisés | En cours |
+| AGENT COMMIT | ✅ Livré | T-009 : 3 commits conventionnels + clôture (4ᵉ commit) | En veille |
 | AGENT AUDIT GLOBAL | ✅ Livré | AUDIT-001 clôturé | AUDIT-002 après 1ʳᵉ feature |
 | DEV BACKEND / DATA / DEVOPS / SÉCURITÉ / a11y / PERF | ⚪ En veille | — (contrôles a11y/perf réalisés via T-007/T-008) | Activation à la première feature |
 
@@ -26,7 +26,7 @@
 | Normalisation P0 (T-004) | ██████████ 100 % | Validé par revue indépendante + E2E |
 | Documentation (T-006) | ██████████ 100 % | README racine livré |
 | Qualité (T-007, T-008) | ██████████ 100 % | Revue + E2E concluntes, 0 erreur console |
-| DevOps (T-009) | ███████░░░ ~70 % | Commits en cours au moment de la mise à jour |
+| DevOps (T-009) | ██████████ 100 % | chore(scaffold) + feat(frontend) + docs(gouvernance) + clôture |
 | Produit (T-010) | ⛔ Bloqué | **Dépendance : cahier des charges utilisateur** |
 
 ## Preuves QA (règle anti-menterie)
