@@ -1,17 +1,18 @@
 "use client";
 
 /**
- * VoiceButton — bouton « Écouter » de l'onboarding (FEATURE-002).
+ * VoiceButton — bouton « Écouter » de l'onboarding (FEATURE-002, Rév. A).
  *
- * Enveloppe accessible du hook useVoice : Volume2 au repos, Loader2 pendant
- * la génération, onde animée pendant la lecture. Un seul flux audio global
- * (singleton dans le hook) — re-cliquer stoppe la voix.
+ * Enveloppe accessible du hook useVoice (Web Speech API, voix fr-FR native
+ * de l'appareil) : Volume2 au repos, onde pulsée pendant la lecture.
+ * Un seul flux audio global (speechSynthesis est un singleton) — re-cliquer
+ * stoppe la voix. Latence nulle : pas d'état de chargement.
  *
  * Integrations : MainMenu & CharacterCreation (INTRO_TEXT), HowToPlay
  * (les 6 leçons), DialogueBox (réplique courante du tutoriel Momoh).
  */
 
-import { Loader2, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
 import { useVoice } from "@/hooks/use-voice";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +26,6 @@ export interface VoiceButtonProps {
 
 export function VoiceButton({ text, srLabel, className }: VoiceButtonProps) {
   const { status, toggle } = useVoice(text);
-  const isLoading = status === "loading";
   const isPlaying = status === "playing";
   const preview = text.trim().slice(0, 40);
 
@@ -46,11 +46,7 @@ export function VoiceButton({ text, srLabel, className }: VoiceButtonProps) {
         className,
       )}
     >
-      {isLoading ? (
-        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-      ) : (
-        <Volume2 className="size-4" aria-hidden="true" />
-      )}
+      <Volume2 className="size-4" aria-hidden="true" />
     </button>
   );
 }

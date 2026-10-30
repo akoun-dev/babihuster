@@ -78,3 +78,45 @@ Acteur unique : **JOUEUR (guest)** — référence `.ai/ACTORS.md`.
   coupure au changement de réplique et à la navigation, 0 erreur console,
   mobile 390 px sans débordement), latences consignées §6
   — preuves : `.ai/screenshots/feat-002-voice-*.png`, `dev.log`
+
+---
+
+## 8. Révision A — pivot Web Speech API (retour utilisateur T-021b)
+
+> Retour : « au niveau de "Ton histoire" la voix n'est pas en français ».
+> Cause : les voix du SDK TTS (`tongtong` & co.) sont orientées zh/en — le
+> français ivoirien était prononcé avec l'accent/phonétique d'une autre langue.
+
+**Décision (ADR de révision)** : abandon du SDK TTS backend au profit de
+l'API native `window.speechSynthesis` (Web Speech API) avec voix
+française de l'appareil (`lang="fr-FR"`, voix locale préférée).
+
+| Critère | Avant (SDK TTS) | Après (Web Speech API) |
+|---|---|---|
+| Français | ✗ (accent zh/en) | ✓ voix fr natives de l'appareil |
+| Latence | 1,2 → 22,4 s (1ʳᵉ fois) | ~0 (instantané) |
+| Coût serveur | POST + cache mémoire | aucun |
+| Route `/api/game/tts` | utilisée | **supprimée** (code mort) |
+| Contournement Chrome ~15 s | n/a | découpe en phrases ≤ 180 car. en file |
+
+Conséquences :
+- `src/hooks/use-voice.ts` réécrit (états réduits à `idle`/`playing` — plus
+  de spinner, la lecture démarre immédiatement).
+- `src/app/api/game/tts/route.ts` supprimée (le git historise la v1).
+- `VoiceButton` simplifié (plus de Loader2).
+- Les §3 (design technique API) et §6 (latence) ci-dessus sont obsolètes,
+  conservés pour l'historique de décision.
+
+## 9. Validation Révision A
+
+- ☑ Audit navigateur (banc headless SANS moteur TTS — 0 voix exposées) :
+  MutationObserver sur `aria-pressed` → transitions `true` (t=68 ms) →
+  `false` (t=90 ms, fin immédiate sans voix) sur Menu ET HowToPlay ; stop,
+  Escape et changement de réplique remettent `synth.speaking=false` ;
+  géométrie dialog contrôlée (bouton 811,85 36×36 — chevauchement description
+  : non) ; 0 erreur console ; mobile 390 px sans débordement
+  — preuves : `.ai/screenshots/feat-002-revA-voice-mobile.png`
+- ⚠ Limite du banc : aucun moteur TTS en headless → l'AUDIBLE français est à
+  confirmer sur un navigateur réel (Chrome/Edge/Safari ont des voix fr-FR
+  natives : « Google français », « Microsoft Hortense », « Amélie »).
+- ☐ AGENT 2 (QA/PO) : revue de la révision

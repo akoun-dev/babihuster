@@ -42,3 +42,8 @@
 - **Contexte :** pendant l'E2E, le script de test payait systématiquement les dash de police → 0 F et diagnostic « bug » erroné ; le journal du jeu a prouvé que le moteur était correct.
 - **Leçon :** en cas de suspicion de bug, lire l'état sérialisé (localStorage) et le journal in-game AVANT de conclure ; distinguer difficulté de jeu et défaut technique.
 - **Action systémique :** diagnostic par `localStorage` + journal = première étape de toute investigation gameplay.
+
+### LL-007 — Vérifier la langue cible d'un service TTS avant intégration (T-021)
+- **Contexte :** FEATURE-002 — la voix d'onboarding a été intégrée avec le SDK TTS (`tongtong`) sans test d'écoute réel ; le retour utilisateur a révélé que le français n'était pas rendu.
+- **Leçon :** pour l'audio/la voix, la QA « papier » (code 200, fichier non vide) ne prouve pas la qualité perçue. Un check de langue cible (écoute humaine ou ASR round-trip) fait partie du critère d'acceptation. Par ailleurs, l'API native du navigateur (Web Speech API) était la solution plus simple depuis le début : latence nulle, voix locales.
+- **Action systémique :** tout contenu audio généré passe un test perceptuel (écoute ou transcription aller-retour) avant clôture ; envisager d'abord les capacités natives du navigateur avant d'introduire un service backend.

@@ -47,4 +47,4 @@
 
 - Cahier des charges « Abidjan Hustle » reçu → adapté en Vertical Slice Web (ADR-003), livré et validé en une session.
 - Le sous-agent frontend a détecté un bug moteur critique (double saut de jour) → corrigé et re-vérifié (LL-005).
-- T-021 : voix TTS ajoutée à l'onboarding (menu, création, « Comment jouer », dialogue tuto) via `/api/game/tts` (SDK backend seul) — bug d'état « playing » détecté à l'audit et corrigé avant commit.
+- T-021b : pivot voix → Web Speech API (`fr-FR` natif navigateur) après retour utilisateur (le SDK TTS ne rendait pas le français) ; route SDK supprimée, latence nulle, LL-007 consignée.

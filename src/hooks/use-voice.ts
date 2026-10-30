@@ -1,34 +1,31 @@
 "use client";
 
 /**
- * useVoice — lecture vocale de l'onboarding (FEATURE-002) — acteur : JOUEUR.
+ * useVoice — lecture vocale de l'onboarding (FEATURE-002, Révision A).
  *
- * Hook client unique pour tous les boutons « Écouter » : un SEUL élément
- * <audio> global (jamais deux voix en même temps), cache de blobs en
- * session, file de lecture séquentielle si le texte dépasse la limite SDK
- * (découpe par phrases ≤ 900 caractères, l'API tolère jusqu'à 1024).
+ * ⚠ PIVOT après retour utilisateur : le SDK TTS backend ne rend pas le
+ * français (voix orientées zh/en) → remplacé par l'API native du navigateur
+ * `window.speechSynthesis` avec voix française de l'appareil (fr-FR).
+ * Bénéfices : prononciation réellement française, latence nulle (plus de
+ * file de génération 1–22 s), zéro appel serveur.
  *
- * État partagé via un mini-store externe (useSyncExternalStore, même pattern
- * que GameShell) : chaque VoiceButton dérive son statut de la clé de texte
- * globale — donc deux boutons portant le même texte (menu + création)
- * s'activent ensemble.
- *
- * Arrêt propre : `stop()` à l'unmount du bouton (prop stopOnUnmount) pour
- * couper la voix quand un dialog se ferme ou qu'on avance dans le dialogue.
+ * Design conservé : mini-store externe (useSyncExternalStore), clé = texte,
+ * un seul flux audio global (speechSynthesis EST un singleton), arrêt propre
+ * au changement de texte / unmount. Contourne le bug Chrome (coupure ~15 s)
+ * en découpant le texte en phrases ≤ 180 caractères, énoncées mises en file.
  */
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { toast } from "@/hooks/use-toast";
 
-export const DEFAULT_VOICE = "tongtong";
+const LANG = "fr-FR";
+/** Longueur max d'un énoncé (contourne le bug Chrome de coupure ~15 s). */
+const CHUNK_LIMIT = 180;
 
-/** Limite par requête API (SDK : 1024 durs, marge de sécurité). */
-const CHUNK_LIMIT = 900;
-
-type VoiceStatus = "idle" | "loading" | "playing";
+export type VoiceStatus = "idle" | "playing";
 
 interface VoiceState {
-  /** Clé du texte en cours (voice|speed|text). */
+  /** Texte en cours de lecture. */
   key: string | null;
   status: VoiceStatus;
 }
@@ -50,23 +47,10 @@ function getSnapshot(): VoiceState {
   return state;
 }
 
-/** Élément audio singleton — une seule voix à la fois, partout. */
-let audioEl: HTMLAudioElement | null = null;
-function getAudio(): HTMLAudioElement {
-  if (!audioEl) {
-    audioEl = new Audio();
-    audioEl.preload = "auto";
-  }
-  return audioEl;
-}
-
-/** Cache de blobs en session — clé = voice|speed|text → objectURL. */
-const blobCache = new Map<string, string>();
-
-/** Jeton d'annulation : toute nouvelle lecture ou stop() invalide la file. */
+/** Jeton d'annulation : tout stop() ou nouvelle lecture invalide la file. */
 let playToken = 0;
 
-/** Découpe un long texte en chunks ≤ CHUNK_LIMIT aux frontières de phrases. */
+/** Découpe un texte en chunks ≤ CHUNK_LIMIT aux frontières de phrases. */
 function splitIntoChunks(text: string): string[] {
   const sentences = text.match(/[^.!?…]+[.!?…]*\s*/g) ?? [text];
   const chunks: string[] = [];
@@ -83,130 +67,109 @@ function splitIntoChunks(text: string): string[] {
   return chunks.length > 0 ? chunks : [text];
 }
 
-/** Appelle l'API TTS et retourne un objectURL lisible par <audio>. */
-async function fetchAudioUrl(
-  text: string,
-  voice: string,
-  speed: number,
-): Promise<string> {
-  const res = await fetch("/api/game/tts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, voice, speed }),
-  });
-  if (!res.ok) {
-    let message = "La voix est indisponible pour l'instant.";
-    try {
-      const data = (await res.json()) as { error?: string };
-      if (data.error) message = data.error;
-    } catch {
-      /* corps non-JSON : message par défaut */
-    }
-    throw new Error(message);
-  }
-  const blob = await res.blob();
-  return URL.createObjectURL(blob);
+/**
+ * Meilleure voix française de l'appareil : voix locale d'abord (offline,
+ * pas de bug de timeout), sinon la première voix fr. Retourne undefined si
+ * l'appareil n'en expose pas — l'attribut `lang` de l'énoncé prend le relais.
+ */
+function pickFrenchVoice(): SpeechSynthesisVoice | undefined {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return undefined;
+  const voices = window.speechSynthesis.getVoices();
+  const fr = voices.filter((v) => v.lang?.toLowerCase().startsWith("fr"));
+  return fr.find((v) => v.localService) ?? fr[0] ?? undefined;
 }
 
 export interface UseVoiceResult {
   /** Statut du texte courant (idle si un AUTRE texte est en lecture). */
   status: VoiceStatus;
   /** Lance (ou stoppe, si déjà actif) la lecture de ce texte. */
-  toggle: (text: string, options?: { voice?: string; speed?: number }) => void;
+  toggle: (text: string) => void;
   /** Coupe immédiatement toute lecture en cours. */
   stop: () => void;
 }
 
 export function useVoice(keyText: string): UseVoiceResult {
   const globalState = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
-  const voiceKey = `${DEFAULT_VOICE}|1|${keyText}`;
-
   const status: VoiceStatus =
-    globalState.key === voiceKey ? globalState.status : "idle";
+    globalState.key === keyText ? globalState.status : "idle";
 
   const stop = useCallback(() => {
     playToken += 1;
     if (state.key !== null || state.status !== "idle") {
       emit({ key: null, status: "idle" });
     }
-    if (audioEl) {
-      audioEl.pause();
-      audioEl.removeAttribute("src");
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
     }
   }, []);
 
   const toggle = useCallback(
-    (text: string, options?: { voice?: string; speed?: number }) => {
-      const voice = options?.voice ?? DEFAULT_VOICE;
-      const speed = options?.speed ?? 1;
-      const key = `${voice}|${speed}|${text}`;
-
+    (text: string) => {
       // Toggle : re-cliquer sur le bouton actif stoppe la voix.
-      if (state.key === key && state.status !== "idle") {
+      if (state.key === text && state.status === "playing") {
         stop();
         return;
       }
 
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+        toast({
+          title: "Voix indisponible",
+          description: "Ce navigateur ne supporte pas la synthèse vocale.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const synth = window.speechSynthesis;
+      synth.cancel(); // coupe toute lecture précédente (singleton global)
       const token = ++playToken;
-      emit({ key, status: "loading" });
+      emit({ key: text, status: "playing" });
 
-      void (async () => {
-        try {
-          const chunks = text.length > CHUNK_LIMIT ? splitIntoChunks(text) : [text];
-          const urls: string[] = [];
-          for (const chunk of chunks) {
-            const cacheKey = `${voice}|${speed}|${chunk}`;
-            let url = blobCache.get(cacheKey);
-            if (!url) {
-              url = await fetchAudioUrl(chunk, voice, speed);
-              blobCache.set(cacheKey, url);
-            }
-            urls.push(url);
-            if (token !== playToken) return; // annulé entre deux chunks
+      const chunks = splitIntoChunks(text);
+      const voice = pickFrenchVoice();
+      let index = 0;
+
+      const speakNext = (): void => {
+        if (token !== playToken) return; // annulé entre deux énoncés
+        if (index >= chunks.length) {
+          emit({ key: null, status: "idle" });
+          return;
+        }
+        const utterance = new SpeechSynthesisUtterance(chunks[index++]);
+        utterance.lang = LANG;
+        if (voice) utterance.voice = voice;
+        utterance.rate = 1;
+        utterance.onend = speakNext;
+        utterance.onerror = (event) => {
+          // « interrupted »/« canceled » = stop() volontaire → silence.
+          if (
+            token !== playToken ||
+            event.error === "interrupted" ||
+            event.error === "canceled"
+          ) {
+            return;
           }
-
-          const audio = getAudio();
-          // Lecture effective : publier l'état « playing » (l'audio peut
-          // démarrer après le chargement du blob — on émet AVANT la file).
-          emit({ key, status: "playing" });
-          for (const url of urls) {
-            if (token !== playToken) return; // annulé pendant la file
-            await new Promise<void>((resolve, reject) => {
-              const onEnded = () => {
-                cleanup();
-                resolve();
-              };
-              const onError = () => {
-                cleanup();
-                reject(new Error("Lecture audio impossible sur cet appareil."));
-              };
-              const cleanup = () => {
-                audio.removeEventListener("ended", onEnded);
-                audio.removeEventListener("error", onError);
-              };
-              audio.addEventListener("ended", onEnded);
-              audio.addEventListener("error", onError);
-              audio.src = url;
-              audio.currentTime = 0;
-              audio.play().catch(onError);
-            });
-          }
-
-          // File terminée normalement → retour au repos.
-          if (token === playToken) emit({ key: null, status: "idle" });
-        } catch (error) {
-          if (token !== playToken) return; // annulation volontaire : silence
           emit({ key: null, status: "idle" });
           toast({
             title: "Voix indisponible",
-            description:
-              error instanceof Error
-                ? error.message
-                : "Réessaie dans un instant, môgô.",
+            description: "Aucune voix française n'a pu être lancée sur cet appareil.",
             variant: "destructive",
           });
+        };
+        try {
+          synth.speak(utterance);
+        } catch {
+          // Certains moteurs jettent en synchrone (aucune voix installée…).
+          utterance.onerror(
+            new SpeechSynthesisErrorEvent("error", {
+              error: "synthesis-failed",
+              utterance,
+            }),
+          );
         }
-      })();
+      };
+
+      speakNext();
     },
     [stop],
   );
@@ -216,9 +179,9 @@ export function useVoice(keyText: string): UseVoiceResult {
   // — mais uniquement si c'est CE texte qui est en cours de lecture.
   useEffect(() => {
     return () => {
-      if (state.key === voiceKey) stop();
+      if (state.key === keyText) stop();
     };
-  }, [voiceKey, stop]);
+  }, [keyText, stop]);
 
   return { status, toggle, stop };
 }
