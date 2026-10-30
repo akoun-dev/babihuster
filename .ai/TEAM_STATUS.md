@@ -1,6 +1,6 @@
 # TEAM_STATUS — VISIBILITÉ DE L'AVANCEMENT
 
-> Mis à jour à chaque évolution majeure. Dernière mise à jour : **T-022 — Section « Nos inspirations » (GTA V / The Sims) sur le menu**
+> Mis à jour à chaque évolution majeure. Dernière mise à jour : **T-023 — Avatar personnalisable (coiffure/peau) + fallback voix serveur (kazi)**
 
 ## 🟢 ÉTAT GLOBAL : FEAT-001 LIVRÉE (boucle de jeu complète validée E2E) — commits en cours (T-019) puis AUDIT-002 clôturé
 
@@ -30,6 +30,7 @@
 | Audit (T-020) | ████████░░ 80 % | AUDIT-002 rédigé |
 | **Voix onboarding (T-021, FEATURE-002)** | ██████████ 100 % | Pivot T-021b : Web Speech API `fr-FR` native navigateur (latence nulle, 0 serveur) — spec `.ai/SPECS/FEATURE-002_VOICE.md` |
 | Présentation inspirations (T-022) | ██████████ 100 % | Section « Nos inspirations » sur le menu : **GTA V** (monde ouvert, missions variées, humour noir) + **The Sims** (gestion du quotidien, relations sociales) — formulations utilisateur conservées verbatim |
+| **Avatar + voix v2 (T-023, FEATURE-003)** | ██████████ 100 % | Avatar SVG (6 coiffures × 4 peaux × 3 tenues) preview création + HUD ; save v2 + migration v1 prouvée (save injectée → defaults) ; fallback voix serveur `kazi` validé E2E (POST 200 → lecture → toggle stop) — specs FEATURE-003 + FEATURE-002 §10 |
 
 ## Preuves QA FEAT-001 (règle anti-menterie)
 

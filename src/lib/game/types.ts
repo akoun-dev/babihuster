@@ -14,6 +14,12 @@ export type NeedId = "faim" | "energie" | "moral" | "hygiene";
 
 export type Outfit = "pagne" | "streetwear" | "costard";
 
+/** Coiffure du personnage (T-023, FEATURE-003) — voir HAIRSTYLES (data.ts) */
+export type HairId = "rase" | "coupe" | "degrade" | "dreads" | "tresses" | "afro";
+
+/** Teinte de peau du personnage (T-023, FEATURE-003) — voir SKIN_TONES (data.ts) */
+export type SkinId = "noisette" | "cafe" | "chocolat" | "ebene";
+
 export type MissionId = "m1" | "m2" | "m3";
 
 export type MissionStatus = "locked" | "offered" | "active" | "done" | "failed";
@@ -87,9 +93,14 @@ export interface TontineState {
 
 /** État complet, sérialisable (localStorage + cloud). version pour migrations. */
 export interface GameState {
-  version: 1;
+  /** v1 = avant avatar (T-023) ; v2 = coiffure + peau. Anciennes saves migrées. */
+  version: 1 | 2;
   name: string;
   outfit: Outfit;
+  /** v2 — absent des saves v1 (défaut appliqué à la migration) */
+  hair?: HairId;
+  /** v2 — absent des saves v1 (défaut appliqué à la migration) */
+  skin?: SkinId;
   day: number;
   minute: number; // 360 (06:00) → 1560 max (02:00 affiché)
   money: number;
@@ -134,6 +145,23 @@ export interface ActionDef {
     | "envoiVillage"
     | "talk";
   npcId?: string;
+}
+
+/** Définition d'une coiffure (data.ts) */
+export interface HairDef {
+  id: HairId;
+  label: string;
+  desc: string;
+  /** Couche expressive (pastille radio-card, swatch) */
+  color: string;
+}
+
+/** Définition d'une teinte de peau (data.ts) */
+export interface SkinDef {
+  id: SkinId;
+  label: string;
+  /** Couleur hex du visage rendu par Avatar */
+  color: string;
 }
 
 export interface TransportDef {

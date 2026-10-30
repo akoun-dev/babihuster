@@ -17,9 +17,10 @@ import {
   resolveEvent,
   talkTo as engineTalk,
   travel,
+  withLookDefaults,
 } from "./engine";
 import { MISSIONS } from "./data";
-import type { GameState, MissionId, Outfit, TransportId, ZoneId } from "./types";
+import type { GameState, HairId, MissionId, Outfit, SkinId, TransportId, ZoneId } from "./types";
 
 export type Screen = "menu" | "creation" | "game";
 
@@ -40,7 +41,7 @@ interface GameStore {
 
   // — Navigation —
   setScreen: (s: Screen) => void;
-  newGame: (name: string, outfit: Outfit) => void;
+  newGame: (name: string, outfit: Outfit, hair: HairId, skin: SkinId) => void;
   resetGame: () => void;
 
   // — Boucle de jeu —
@@ -67,9 +68,9 @@ export const useGame = create<GameStore>()(
 
       setScreen: (screen) => set({ screen }),
 
-      newGame: (name, outfit) =>
+      newGame: (name, outfit, hair, skin) =>
         set({
-          game: newGameState(name, outfit),
+          game: newGameState(name, outfit, hair, skin),
           screen: "game",
           dialogue: null,
         }),
@@ -157,8 +158,9 @@ export const useGame = create<GameStore>()(
           if (!res.ok) return "error";
           const data: { ok: boolean; save: { state: GameState } | null } = await res.json();
           if (!data.ok || !data.save) return "empty";
-          if (data.save.state.version !== 1) return "error";
-          set({ game: data.save.state, screen: "game", dialogue: null });
+          if (data.save.state.version !== 1 && data.save.state.version !== 2) return "error";
+          // Migration look v1 → v2 : coiffure/peau par défaut si absentes.
+          set({ game: withLookDefaults(data.save.state), screen: "game", dialogue: null });
           return "ok";
         } catch {
           return "error";
@@ -169,9 +171,14 @@ export const useGame = create<GameStore>()(
     }),
     {
       name: "abidjan-hustle-save-v1",
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ game: s.game }),
+      // v1 → v2 (T-023) : ajout coiffure/peau par défaut sur les vieilles saves.
+      migrate: (persisted) => {
+        const p = persisted as { game?: GameState | null };
+        return p.game ? { game: withLookDefaults(p.game) } : p;
+      },
     },
   ),
 );

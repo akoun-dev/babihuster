@@ -3,16 +3,19 @@
 /**
  * Écran CRÉATION DE PERSONNAGE — acteur : JOUEUR (guest).
  *
- * Saisie du nom (1–20 caractères), choix de la tenue de départ (OUTFITS,
- * radio-cards colorées) et pitch d'ambiance (INTRO_TEXT). Validation au
- * clic de lancement ; `newGame(name, outfit)` du store fait le reste.
+ * Personnalisation complète du môgô (T-023, FEATURE-003) : nom (1–20),
+ * coiffure (HAIRSTYLES), teinte de peau (SKIN_TONES), tenue de départ
+ * (OUTFITS). Preview live via le composant Avatar (SVG). Validation au
+ * clic de lancement ; `newGame(name, outfit, hair, skin)` du store fait
+ * le reste.
  */
 
 import { useState } from "react";
-import { ArrowLeft, Rocket } from "lucide-react";
-import { INTRO_TEXT, OUTFITS } from "@/lib/game/data";
-import type { Outfit } from "@/lib/game/types";
+import { ArrowLeft, Rocket, Scissors } from "lucide-react";
+import { HAIRSTYLES, INTRO_TEXT, OUTFITS, SKIN_TONES } from "@/lib/game/data";
+import type { HairId, Outfit, SkinId } from "@/lib/game/types";
 import { useGame } from "@/lib/game/store";
+import { Avatar } from "@/components/guest/Avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +28,8 @@ export function CharacterCreation() {
   const newGame = useGame((s) => s.newGame);
 
   const [name, setName] = useState("");
+  const [hair, setHair] = useState<HairId>("coupe");
+  const [skin, setSkin] = useState<SkinId>("cafe");
   const [outfit, setOutfit] = useState<Outfit>("pagne");
   const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +41,7 @@ export function CharacterCreation() {
       return;
     }
     setError(null);
-    newGame(trimmed, outfit);
+    newGame(trimmed, outfit, hair, skin);
   }
 
   return (
@@ -67,6 +72,23 @@ export function CharacterCreation() {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-8">
+          {/* ——— Preview live : ton môgô ——— */}
+          <div className="game-panel border-tricolore mx-auto flex w-full max-w-xs flex-col items-center gap-2 rounded-xl p-4">
+            <div className="w-40">
+              <Avatar
+                hair={hair}
+                outfit={outfit}
+                skin={skin}
+                label={`Portrait de ton personnage ${name.trim()}`.trim()}
+              />
+            </div>
+            <p aria-live="polite" className="text-center text-sm text-game-muted">
+              {name.trim()
+                ? `Prêt à prendre le pays, ${name.trim()} !`
+                : "Personnalise ton môgô ci-dessous."}
+            </p>
+          </div>
+
           {/* ——— Nom ——— */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="player-name" className="text-game-text">
@@ -95,6 +117,82 @@ export function CharacterCreation() {
               </p>
             )}
           </div>
+
+          {/* ——— Coiffure (radio-cards) ——— */}
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-2 flex items-center gap-2 text-sm font-semibold text-game-text">
+              <Scissors className="size-4 text-game-soleil" aria-hidden="true" />
+              Ta coiffure
+            </legend>
+            <RadioGroup
+              value={hair}
+              onValueChange={(v) => setHair(v as HairId)}
+              className="grid gap-3 sm:grid-cols-3"
+              aria-label="Choix de la coiffure"
+            >
+              {HAIRSTYLES.map((h) => (
+                <Label
+                  key={h.id}
+                  htmlFor={`hair-${h.id}`}
+                  className="game-panel group relative flex cursor-pointer items-start gap-3 rounded-xl p-4 transition-colors has-[button[data-state=checked]]:bg-game-panel/70"
+                  style={
+                    hair === h.id
+                      ? { borderColor: h.color, boxShadow: `0 0 0 1px ${h.color}` }
+                      : undefined
+                  }
+                >
+                  <RadioGroupItem
+                    id={`hair-${h.id}`}
+                    value={h.id}
+                    className="mt-0.5 border-game-muted text-game-soleil focus-visible:ring-game-soleil/50 data-[state=checked]:border-game-soleil"
+                  />
+                  <span className="min-w-0">
+                    <span className="flex items-center gap-2 text-sm font-bold text-game-text">
+                      <span
+                        aria-hidden="true"
+                        className="size-3 shrink-0 rounded-full ring-1 ring-black/30"
+                        style={{ backgroundColor: h.color }}
+                      />
+                      {h.label}
+                    </span>
+                    <span className="mt-1 block text-xs leading-relaxed text-game-muted">
+                      {h.desc}
+                    </span>
+                  </span>
+                </Label>
+              ))}
+            </RadioGroup>
+          </fieldset>
+
+          {/* ——— Teinte de peau (pastilles) ——— */}
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-2 text-sm font-semibold text-game-text">
+              Ta teinte de peau
+            </legend>
+            <RadioGroup
+              value={skin}
+              onValueChange={(v) => setSkin(v as SkinId)}
+              className="flex flex-wrap gap-3"
+              aria-label="Choix de la teinte de peau"
+            >
+              {SKIN_TONES.map((t) => (
+                <Label
+                  key={t.id}
+                  htmlFor={`skin-${t.id}`}
+                  className="flex cursor-pointer flex-col items-center gap-1.5"
+                >
+                  <RadioGroupItem
+                    id={`skin-${t.id}`}
+                    value={t.id}
+                    className="size-11 rounded-full border-2 border-transparent p-0 focus-visible:ring-game-soleil/50 data-[state=checked]:border-game-soleil data-[state=checked]:ring-2 data-[state=checked]:ring-game-soleil/40"
+                    style={{ backgroundColor: t.color }}
+                    aria-label={`Peau ${t.label}`}
+                  />
+                  <span className="text-xs font-medium text-game-muted">{t.label}</span>
+                </Label>
+              ))}
+            </RadioGroup>
+          </fieldset>
 
           {/* ——— Tenue (radio-cards) ——— */}
           <fieldset className="flex flex-col gap-3">

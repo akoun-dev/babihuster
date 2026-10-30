@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Avatar } from "@/components/guest/Avatar";
 import { GlossarySheet } from "@/components/guest/GlossarySheet";
 import { HowToPlay } from "@/components/guest/HowToPlay";
 import { MissionSheet } from "@/components/guest/MissionSheet";
@@ -140,8 +141,20 @@ export function GameHUD() {
       className="sticky top-16 z-30 border-b border-game-text/10 bg-game-bg/95 backdrop-blur supports-[backdrop-filter]:bg-game-bg/85"
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-2 py-2 sm:px-4 lg:px-6">
-        {/* ——— Ligne 1 : temps, argent, réputation, tontine, boutons ——— */}
+        {/* ——— Ligne 1 : portrait, temps, argent, réputation, tontine, boutons ——— */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          {/* Mini-portrait du môgô (T-023) — v1 save sans look → défauts sûrs */}
+          <div
+            aria-hidden="true"
+            className="hidden size-11 shrink-0 overflow-hidden rounded-lg border border-game-text/15 bg-game-panel sm:block"
+          >
+            <Avatar
+              hair={game.hair ?? "coupe"}
+              outfit={game.outfit}
+              skin={game.skin ?? "cafe"}
+              label=""
+            />
+          </div>
           <p className="flex items-center gap-1.5 text-sm font-bold text-game-text">
             Jour {game.day}
             <span aria-hidden="true" className="text-game-muted">

@@ -18,12 +18,14 @@ import {
 import type {
   ActionDef,
   GameState,
+  HairId,
   JournalKind,
   MissionId,
   NpcDef,
   Outcome,
   Outfit,
   PendingEvent,
+  SkinId,
   SkillId,
   TransportId,
   ZoneId,
@@ -476,11 +478,18 @@ function progressMissions(s: GameState): void {
 
 // ————————————————————————————— État initial —————————————————————————————
 
-export function newGameState(name: string, outfit: Outfit): GameState {
+export function newGameState(
+  name: string,
+  outfit: Outfit,
+  hair: HairId = "coupe",
+  skin: SkinId = "cafe",
+): GameState {
   const blank: GameState = {
-    version: 1,
+    version: 2,
     name: name.trim() || "Môgô",
     outfit,
+    hair,
+    skin,
     day: 1,
     minute: 420,
     money: START_MONEY,
@@ -508,6 +517,22 @@ export function newGameState(name: string, outfit: Outfit): GameState {
   };
   addLog(blank, `Jour 1 — Tu poses le pied à la gare de Yopougon avec ${START_MONEY} F. On a mis le pays !`, "info");
   return blank;
+}
+
+/**
+ * Migration look v1 → v2 (T-023) : les anciennes saves n'ont ni `hair` ni
+ * `skin` — on applique les défauts (coupe courte, peau café) sans toucher
+ * au reste de l'état. Idempotent (safe sur un état déjà v2).
+ */
+export function withLookDefaults<T extends { version?: number; hair?: HairId; skin?: SkinId }>(
+  state: T,
+): T & { version: 1 | 2; hair: HairId; skin: SkinId } {
+  return {
+    ...state,
+    version: 2,
+    hair: state.hair ?? "coupe",
+    skin: state.skin ?? "cafe",
+  };
 }
 
 // ————————————————————————————— Actions —————————————————————————————

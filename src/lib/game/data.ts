@@ -8,8 +8,10 @@
 import type {
   ActionDef,
   GlossaryEntry,
+  HairDef,
   MissionDef,
   NpcDef,
+  SkinDef,
   TransportDef,
   ZoneDef,
 } from "./types";
@@ -608,11 +610,63 @@ export const GLOSSARY: GlossaryEntry[] = [
   { word: "Ya pas drap", def: "Il n'y a pas de problème ; tout est en ordre." },
   { word: "Yako", def: "Expression de compassion : « courage pour la galère »." },
   { word: "Djantra", def: "Rabatteur qui attire les clients dans les maquis/boîtes." },
-];;
+];
 
 /** Textes d'intro (écran de création et dialogue d'ouverture) */
 export const INTRO_TEXT =
   "Tu débarques à la gare de Yopougon avec 2 000 F en poche — le faux porteur a pris le reste. Ton rêve : percer à Babi. Chambre de garçon, djossi, tontine, enjaillement… À toi de jouer, môgô. On a mis le pays !";
+
+/**
+ * Coiffures du personnage (T-023, FEATURE-003) — retours utilisateur :
+ * « il faut un personnage, choisir sa coiffure etc. ». La couleur sert au
+ * swatch des radio-cards ET à la couche cheveu du composant Avatar.
+ */
+export const HAIRSTYLES: HairDef[] = [
+  {
+    id: "coupe",
+    label: "Coupe courte",
+    desc: "Passage chez le barbero avant de prendre le pays.",
+    color: "#241A12",
+  },
+  {
+    id: "rase",
+    label: "Crâne rasé",
+    desc: "Simple et frais, sous le soleil de Yop.",
+    color: "#A89A82",
+  },
+  {
+    id: "degrade",
+    label: "Dégradé",
+    desc: "Fades net, la fierté du barbershop de Siporex.",
+    color: "#4A3728",
+  },
+  {
+    id: "dreads",
+    label: "Dreads",
+    desc: "La crinière de Yop City, banana !",
+    color: "#5C4033",
+  },
+  {
+    id: "tresses",
+    label: "Tresses",
+    desc: "Tresses collées, perles dorées au bout.",
+    color: "#3B2F2F",
+  },
+  {
+    id: "afro",
+    label: "Afro",
+    desc: "Volume vintage, style années 70 à la ivoirienne.",
+    color: "#241A12",
+  },
+];
+
+/** Teintes de peau (T-023) — Babi est un carrefour du monde entier. */
+export const SKIN_TONES: SkinDef[] = [
+  { id: "noisette", label: "Noisette", color: "#C68B59" },
+  { id: "cafe", label: "Café", color: "#A97244" },
+  { id: "chocolat", label: "Chocolat", color: "#875733" },
+  { id: "ebene", label: "Ébène", color: "#62381F" },
+];
 
 export const OUTFITS: Array<{ id: "pagne" | "streetwear" | "costard"; label: string; desc: string; color: string }> = [
   { id: "pagne", label: "Pagne wax", desc: "Authentique et coloré. Le quartier te respecte.", color: "#B5451B" },

@@ -120,3 +120,32 @@ Conséquences :
   confirmer sur un navigateur réel (Chrome/Edge/Safari ont des voix fr-FR
   natives : « Google français », « Microsoft Hortense », « Amélie »).
 - ☐ AGENT 2 (QA/PO) : revue de la révision
+
+## 10. Révision B (T-023-a) — Fallback serveur quand l'appareil n'a AUCUNE voix fr
+
+Retour utilisateur réel (capture : toast « Voix indisponible — Aucune voix
+française n'a pu être lancée sur cet appareil ») : certains navigateurs
+n'exposent aucune voix fr (`getVoices()` vide). La Révision A s'arrêtait là.
+
+**Design hybride (voie 1 → voie 2 automatique) :**
+
+| Voie | Condition | Comportement |
+|---|---|---|
+| 1. Native | `speechSynthesis` existe ET `getVoices()` contient une voix `fr*` | Web Speech, latence 0, découpe ≤ 180 car. (inchangé Rév. A) |
+| 2. Serveur | aucune voix fr | POST `/api/game/tts` (route **rétablie**) → blob WAV → `<audio>` singleton, file ≤ 900 car./chunk, `loading` pendant génération |
+
+- **Voix serveur par défaut : `kazi`** — sélection objective par boucle
+  TTS→ASR (générer phrase FR avec chaque voix, re-transcrire, comparer) :
+  tongtong **tronque** les phrases (mots sautés) ; kazi et jam sont les
+  seules complètes ; kazi conserve les articles français (« du Garba »,
+  « du Quotient »). Mesures : `.ai/SPECS/FEATURE-002_VOICE.md` §10,
+  échantillons `/tmp/tts-test/` (session T-023).
+- Route rétablie : normalisation typographique (« » ’ … espaces insécables)
+  avant hachage (clés de cache stables), cache FIFO 64, défaut `kazi`.
+- Hook : états `idle | loading | playing` ; `VoiceButton` ré-affiche
+  Loader2 (spin) + `aria-busy` ; AbortController + token d'annulation
+  couvrent fetch ET lecture ; cache blobs FIFO 48 (LRU par re-clic).
+- Connu/limité : l'accent des voix SDK n'est pas ivoirien ; les mots nouchi
+  (« s'enjailler », « gbonhi ») restent approximatifs — itération future :
+  dictionnaire de prononciation.
+- ☐ AGENT 2 (QA/PO) : revue Révision B
